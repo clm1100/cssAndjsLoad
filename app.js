@@ -10,7 +10,7 @@ app.get("/a",async function(req,res){
     res.send("111")
 })
 app.get('/ajs',async (req,res)=>{
-    await sleep(18000)
+    await sleep(3000)
     res.sendFile(path.join(__dirname,"./static/a.js"))
 })
 app.get('/bjs',async (req,res)=>{
