@@ -2,7 +2,7 @@ const express = require('express');
 const sleep = require('sleep-promise');
 const path = require("path");
 const app = express();
-
+const fs = require('fs');
 app.use(express.static("./public"));
 
 app.get("/a",async function(req,res){
@@ -72,6 +72,30 @@ app.get('/njs',async (req,res)=>{
     res.sendFile(path.join(__dirname,"./static/n.js"))
 })
 
+var concat1 = function(buf1, buf2) {
+    var tmp = new Buffer(buf1.length + buf2.length);
+    buf1.copy(tmp, 0);
+    buf2.copy(tmp, buf1.length);
+    return tmp;
+  }
+
+
+app.post('/upload',(req,res)=>{
+    var chunks = [];
+    var size = 0;
+    req.on('data',(chunk)=>{
+        console.log(chunk);
+        chunks.push(chunk);
+         size += chunk.length;
+    })
+    req.on('end',()=>{
+        var buf = Buffer.concat(chunks, size);
+        fs.writeFile("./data.jpg",buf,(err)=>{
+            if(err) return res.send(err.message);
+            res.send("ok")
+        })
+    })
+})
 
 
 app.listen(3000,()=>{
