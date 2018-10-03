@@ -98,6 +98,41 @@ app.post('/upload',(req,res)=>{
 })
 
 
+app.get('/page',async (req,res)=>{
+    res.type('html')
+    // res.writeHead(200,{
+    //     "Transfer-Encoding": "chunked"
+    // })
+    res.write("ok ");
+    await new Promise((resolve,reject)=>{
+        setTimeout(resolve,3000)
+    })
+    res.write("ok1111");
+    res.end();
+})
+
+
+
+const sleep1 = ms => new Promise(r => setTimeout(r, ms))
+
+app.get('/page1',async (req,res)=>{
+    res.type('html');   
+  res.write('loading...<br>')
+  
+  return sleep1(2000).then(function() {
+    res.write(`timer: 2000ms<br>`)
+    return sleep1(5000)
+  })
+  .then(function() {
+    res.write(`timer: 5000ms<br>`)
+  }).then(function() {
+    res.end()
+  })
+})
+
+
+
+
 app.listen(3000,()=>{
     console.log("ok")
 })
